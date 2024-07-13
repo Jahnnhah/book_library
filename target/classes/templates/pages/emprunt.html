@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Emprunt</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <style>
+        .custom-alert-warning {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #856404; /* Text color */
+            background-color: #fff3cd; /* Background color */
+            border-color: #ffeeba; /* Border color */
+        }
+
+        .custom-alert-warning .alert-heading {
+            color: inherit; /* Heading color same as text color */
+        }
+    </style>
+
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}"class="nav-link my-active" aria-current="page">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+    <div class="dashboard">
+        <div class="row">
+            <div class="col">
+
+                <!-- Emprunt Form -->
+                <div class="form-save">
+                    <form th:action="@{/book-library/emprunt/save}" method="POST">
+                        <h2>Faire un emprunt</h2>
+                        <div th:if="${param.message1}" th:text="${param.message1}" class="custom-alert-warning" role="alert"></div>
+                        <div class="form-floating">
+                            <label for="dateEmprunt">Date Emprunt</label>
+                            <input style="border-radius: 0.25rem 0.25rem 0rem 0rem" type="date" name="date_emprunt" class="my-form save-input form-control" id="dateEmprunt" required>
+                        </div>
+                        <div class="form-floating">
+                            <label for="search-titre">Chercher un livre par titre</label>
+                            <input style="border-radius: 0rem" type="text" id="search-titre" name="search-bar-titre"
+                                   placeholder="chercher un livre par titre" class="my-form save-input form-control"
+                                   oninput="searchItems()">
+                        </div>
+                        <div class="form-floating">
+                            <label for="search-auteur">Chercher un livre par auteur</label>
+                            <input style="border-radius: 0rem" type="text" id="search-auteur" name="search-bar-auteur"
+                                   placeholder="chercher un livre par auteur" class="my-form save-input form-control"
+                                   oninput="searchItems()">
+                        </div>
+                        <div class="form-floating mb-2">
+                            <label for="selected-livre">Livre</label>
+                            <select style="border-radius: 0rem 0rem 0.25rem 0.25rem" name="livre" id="selected-livre" multiple class="my-form save-input form-control h-auto">
+                                <option th:each="livre: ${livres}" th:value="${livre.id}"
+                                        th:text="${livre.titre}+'-'+${livre.id}"
+                                        th:selected="${#strings.toString(livre.id)} == ${#strings.toString(param.idLivre)}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-floating">
+                            <label for="search-nomprenom">Chercher un membre par nom ou prénom</label>
+                            <input style="border-radius: 0.25rem 0.25rem 0rem 0rem" type="text" id="search-nomprenom" name="search-bar-nomprenom"
+                                   placeholder="chercher un membre par nom ou prenom" class="my-form save-input form-control"
+                                   oninput="searchMembre()">
+                        </div>
+                        <div class="form-floating">
+                            <label for="search-email">Chercher un membre par email</label>
+                            <input style="border-radius: 0rem" type="text" id="search-email" name="search-bar-email"
+                                   placeholder="chercher un membre par email" class="my-form save-input form-control"
+                                   oninput="searchMembre()">
+                        </div>
+                        <div class="form-floating mb-2">
+                            <label for="selected-membre">Membre</label>
+                            <select style="border-radius: 0rem 0rem 0.25rem 0.25rem" name="membre" id="selected-membre" multiple class="my-form save-input form-control h-auto">
+                                <option th:each="membre: ${membres}" th:value="${membre.id}"
+                                        th:text="${membre.nom}+' '+${membre.prenom}+' '+${membre.type_membre}"
+                                        th:selected="${#strings.toString(membre.id)} == ${#strings.toString(param.idMembre)}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="emmenerMaison" class="form-check-input" id="emmenerMaison">
+                            <label class="form-check-label" for="emmenerMaison">Emmener à la maison</label>
+                        </div>
+                        <input type="submit" value="Valider" class="w-100 btn btn-lg my-btn" style="margin-top: 10px">
+                    </form>
+                </div>
+
+                <!-- Rendu Form -->
+                <div class="form-save">
+                    <form th:action="@{/book-library/emprunt/save}" method="POST">
+                        <h2>Enregistrer un rendu</h2>
+                        <div th:if="${param.message2}" th:text="${param.message2}" class="alert alert-warning" role="alert"></div>
+                        <div class="form-floating">
+                            <label for="dateRendu">Date Rendu</label>
+                            <input type="date" name="date_rendu" class="my-form save-input form-control" id="dateRendu">
+                        </div>
+                        <div class="form-floating">
+                            <label for="empruntSelect">Emprunt</label>
+                            <select id="empruntSelect" name="id" class="my-form save-input form-control">
+                                <option th:each="emprunt: ${emprunts}" th:if="${emprunt.date_rendu == null}"
+                                        th:value="${emprunt.id}"
+                                        th:text="${emprunt.id}+'-'+${emprunt.membre}+'-'+${emprunt.exemplaire}"></option>
+                            </select>
+                        </div>
+                        <input type="submit" value="Valider" class="w-100 btn btn-lg my-btn" style="margin-top: 10px">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Emprunts Table -->
+        <div class="row mt-4">
+            <div class="col">
+                <table class="table" style="border-radius: 1px">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Exemplaire</th>
+                        <th>Membre</th>
+                        <th>Date Emprunt</th>
+                        <th>Date Limite Emprunt</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="emprunt: ${emprunts}">
+                        <td th:text="${emprunt.id}"></td>
+                        <td th:text="${emprunt.exemplaire}"></td>
+                        <td th:text="${emprunt.membre}"></td>
+                        <td th:text="${#dates.format(emprunt.date_emprunt, 'd MMM yyyy')}"></td>
+                        <td th:text="${#dates.format(emprunt.date_echeance, 'd MMM yyyy')}"></td>
+                        <td>
+                            <span th:if="${emprunt.date_rendu == null}" style="color: red">Pas rendu</span>
+                            <span th:if="${emprunt.date_rendu != null}" style="color: green"
+                                  th:text="${#dates.format(emprunt.date_rendu, 'd MMM yyyy')}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    function searchItems() {
+        var titre = $('#search-titre').val();
+        var auteur = $('#search-auteur').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/book-library/livre/search',
+            data: {
+                titre: titre,
+                auteur: auteur
+            },
+            success: function (data) {
+                var dropdown = $('#selected-livre');
+                dropdown.empty();
+                if (data.length > 0) {
+                    dropdown.show();
+                    data.forEach(function (item) {
+                        dropdown.append('<option value="'+item.id+'">' + item.titre + ' - ' + item.auteur + '</option>');
+                    });
+                } else {
+                    dropdown.hide();
+                }
+            }
+        });
+
+    }
+
+    function searchMembre() {
+        var nomprenom = $('#search-nomprenom').val();
+        var email = $('#search-email').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/book-library/membre/search',
+            data: {
+                nomprenom: nomprenom,
+                email: email
+            },
+            success: function (data) {
+                var dropdown = $('#selected-membre');
+                dropdown.empty();
+                if (data.length > 0) {
+                    dropdown.show();
+                    data.forEach(function (item) {
+                        dropdown.append('<option value="'+item.id+'">' + item.nom + ' ' + item.prenom + '</option>');
+                    });
+                } else {
+                    dropdown.hide();
+                }
+            }
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

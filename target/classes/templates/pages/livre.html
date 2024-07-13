@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Livres</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script>
+        function removeEmptyInputs(form) {
+            var elements = form.elements;
+            for (var i = elements.length - 1; i >= 0; i--) {
+                var element = elements[i];
+                if (element.type === 'text' && element.value.trim() === '') {
+                    element.parentNode.removeChild(element);
+                }
+                if (element.type === 'number' && element.value.trim() === '') {
+                    element.parentNode.removeChild(element);
+                }
+                if (element.type === 'date' && element.value.trim() === '') {
+                    element.parentNode.removeChild(element);
+                }
+                if (element.type === 'textarea' && element.value.trim() === '') {
+                    element.parentNode.removeChild(element);
+                }
+            }
+            return true;
+        }
+    </script>
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link my-active" aria-current="page">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}" class="nav-link">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <!-- Search Form -->
+        <div class="form-search">
+            <form th:action="@{/book-library/livre}" method="get" onsubmit="return removeEmptyInputs(this);">
+                <h4>Search livre</h4>
+                <div class="form-group">
+                    <label for="idFiltre">id</label>
+                    <input type="text" class="my-form filtre-input form-control" id="idFiltre" name="id">
+                </div>
+                <div class="form-group">
+                    <label for="auteurFiltre">auteur</label>
+                    <input type="text" class="my-form filtre-input form-control" id="auteurFiltre" name="auteur">
+                </div>
+                <div class="form-group">
+                    <label for="titreFiltre">titre</label>
+                    <input type="text" class="my-form filtre-input form-control" id="titreFiltre" name="titre">
+                </div>
+                <div class="form-group">
+                    <label for="isbnFiltre">isbn</label>
+                    <input type="text" class="my-form filtre-input form-control" id="isbnFiltre" name="isbn">
+                </div>
+                <div class="form-group">
+                    <label for="numeroCoteFiltre">numero de cote</label>
+                    <input type="text" class="my-form filtre-input form-control" id="numeroCoteFiltre" name="numero_cote">
+                </div>
+                <div class="form-group">
+                    <label for="editeurFiltre">editeur</label>
+                    <input type="text" class="my-form filtre-input form-control" id="editeurFiltre" name="editeur">
+                </div>
+                <div class="form-group">
+                    <label for="dateEditionFiltre">date d'édition</label>
+                    <input type="date" class="my-form filtre-input form-control" id="dateEditionFiltre" name="date_edition">
+                </div>
+                <div class="form-group">
+                    <label for="tomeFiltre">tome</label>
+                    <input type="number" class="my-form filtre-input form-control" id="tomeFiltre" name="tome">
+                </div>
+                <div class="form-group">
+                    <label for="collectionFiltre">collection</label>
+                    <input type="text" class="my-form filtre-input form-control" id="collectionFiltre" name="collection">
+                </div>
+                <div class="form-group">
+                    <label for="langueFiltre">langue</label>
+                    <input type="text" class="my-form filtre-input form-control" id="langueFiltre" name="langue">
+                </div>
+                <div class="form-group">
+                    <label for="nombrePageFiltre">nombre de pages</label>
+                    <input type="number" class="my-form filtre-input form-control" id="nombrePageFiltre" name="nombre_pages">
+                </div>
+                <div class="form-group">
+                    <label for="resumeFiltre">résumé</label>
+                    <textarea name="resume" class="my-form filtre-input form-control" id="resumeFiltre"></textarea>
+                </div>
+                <input type="submit" value="Chercher" class="w-100 my-btn">
+            </form>
+        </div>
+
+        <!-- Content -->
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>titre</th>
+                    <th>auteur</th>
+                    <th>isbn</th>
+                    <th>éditeur</th>
+                    <th>date édition</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="livre: ${livres}">
+                    <td><a class="my-link" th:href="@{/book-library/livre/{id}(id=${livre.id})}" th:text="${livre.id}"></a></td>
+                    <td th:text="${livre.titre}"></td>
+                    <td th:text="${livre.auteur_nom}"></td>
+                    <td th:text="${livre.isbn}"></td>
+                    <td th:text="${livre.editeur}"></td>
+                    <td th:text="${#dates.format(livre.date_edition, 'd MMM yyyy')}"></td>
+                    <td><a class="my-link" th:href="@{/book-library/livre/{id}/update(id=${livre.id})}">Update</a></td>
+                    <td><a class="my-link" th:href="@{/book-library/livre/{id}/delete(id=${livre.id})}">Delete</a></td>
+                    <td><a class="my-link" th:href="@{/book-library/emprunt(idLivre=${livre.id})}">Emprunter</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <br>
+        <div class="form-save">
+            <form th:action="@{/book-library/livre/save}" method="post">
+                <h4>Ajouter livre</h4>
+                <div class="form-group">
+                    <label for="auteurSelect">auteur</label>
+                    <select id="auteurSelect" name="auteur" class="my-form save-input form-control">
+                        <option th:each="auteur: ${auteurs}" th:value="${auteur.id}" th:text="${auteur.nom}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="titreInput">titre</label>
+                    <input type="text" name="titre" class="my-form save-input form-control" id="titreInput">
+                </div>
+                <div class="form-group">
+                    <label for="isbnInput">isbn</label>
+                    <input type="text" name="isbn" class="my-form save-input form-control" id="isbnInput">
+                </div>
+                <div class="form-group">
+                    <label for="numeroCoteInput">numero de cote</label>
+                    <input type="text" name="numero_cote" class="my-form save-input form-control" id="numeroCoteInput">
+                </div>
+                <div class="form-group">
+                    <label for="editeurSelect">editeur</label>
+                    <select name="editeur" class="my-form save-input form-control" id="editeurSelect">
+                        <option th:each="editeur: ${editeurs}" th:value="${editeur.id}" th:text="${editeur.designation}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateEditionInput">date d'edition</label>
+                    <input type="date" name="date_edition" class="my-form save-input form-control" id="dateEditionInput">
+                </div>
+                <div class="form-group">
+                    <label for="tomeInput">tome</label>
+                    <input type="number" name="tome" class="my-form save-input form-control" id="tomeInput">
+                </div>
+                <div class="form-group">
+                    <label for="collectionInput">collection</label>
+                    <input type="text" name="collection" class="my-form save-input form-control" id="collectionInput">
+                </div>
+                <div class="form-group">
+                    <label for="langueInput">langue</label>
+                    <input type="text" name="langue" class="my-form save-input form-control" id="langueInput">
+                </div>
+                <div class="form-group">
+                    <label for="nombrePageInput">nombre de pages</label>
+                    <input type="number" name="nombre_pages" class="my-form save-input form-control" id="nombrePageInput">
+                </div>
+                <div class="form-group">
+                    <label for="resumeInput">résumé</label>
+                    <textarea name="resume" class="my-form save-input form-control" id="resumeInput"></textarea>
+                </div>
+                <input type="submit" value="Ajouter" class="w-100 my-btn">
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

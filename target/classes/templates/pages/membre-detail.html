@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Livre ' + ${id}"></title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/livre.css}">
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link my-active" aria-current="page">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}" class="nav-link">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+    <div class="container-fluid w-75">
+        <div class="row">
+            <h2> Membre id <span th:text="${id}" class="my-title"></span></h2>
+            <ul class="list-group list-group-flush">
+                <li th:text="${membre.nom + ' ' + membre.prenom}" class="list-group-item my-list"></li>
+                <li th:text="${#dates.format(membre.date_naissance, 'd MMM yyyy')}" class="list-group-item my-list"></li>
+                <li th:text="${membre.email}" class="list-group-item my-list"></li>
+                <li th:text="${membre.type_membre_designation}" class="list-group-item my-list"></li>
+            </ul>
+        </div>
+        <div class="row mt-4">
+            <div>
+                <h3>Penalités</h3>
+                <table class="table" style="border-radius: 1px">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>début</th>
+                        <th>fin</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="penalite: ${penalites}">
+                        <td>
+                            <span th:text="${penalite.id}"></span>
+                            <span th:if="${penalite.estEnCours()}" class="mx-3 badge bg-danger rounded-pill">en cours</span>
+                        </td>
+                        <td th:text="${#dates.format(penalite.date_debut, 'd MMM yyyy')}"></td>
+                        <td th:text="${#dates.format(penalite.date_fin, 'd MMM yyyy')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+</body>
+</html>

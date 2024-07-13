@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modier un livre</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/livre.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link my-active" aria-current="page">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}" class="nav-link">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <h2> Modifier le livre id <span class="my-title" th:text="${livre.id}"></span></h2>
+        <div>
+            <div class="form-save">
+            <form th:action="@{/book-library/livre/save}" method="post">
+                <input type="hidden" name="id" th:value="${livre.id}">
+                <div class="form-floating">
+                    <label for="auteurSelect">auteur</label>
+                    <select id="auteurSelect" name="auteur" class="my-form save-input form-control"
+                            style="border-radius: 0.25rem 0.25rem 0rem 0rem">
+                        <option th:each="auteur: ${auteurs}" th:value="${auteur.id}" th:text="${auteur.nom}"
+                                th:selected="${auteur.id == livre.auteur}"></option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <label for="titreInput">titre</label>
+                    <input type="text" name="titre" th:value="${livre.titre}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="titreInput">
+                </div>
+                <div class="form-floating">
+                    <label for="isbnInput">isbn</label>
+                    <input type="text" name="isbn" th:value="${livre.isbn}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="isbnInput">
+                </div>
+                <div class="form-floating">
+                    <label for="numeroCoteInput">numero de cote</label>
+                    <input type="text" name="numero_cote" th:value="${livre.numero_cote}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="numeroCoteInput">
+                </div>
+                <div class="form-floating">
+                    <label for="editeurSelect">editeur</label>
+                    <select name="editeur" class="my-form save-input form-control" style="border-radius: 0rem" id="editeurSelect">
+                        <option th:each="editeur: ${editeurs}" th:value="${editeur.id}" th:text="${editeur.designation}"
+                                th:selected="${editeur.id == livre.editeur}"></option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <label for="dateEditionInput">date d'edition</label>
+                    <input type="date" name="date_edition" th:value="${livre.date_edition}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="dateEditionInput">
+                </div>
+                <div class="form-floating">
+                    <label for="tomeInput">tome</label>
+                    <input type="number" name="tome" th:value="${livre.tome}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="tomeInput">
+                </div>
+                <div class="form-floating">
+                    <label for="collectionSelect">collection</label>
+                    <select name="collection" class="my-form save-input form-control" style="border-radius: 0rem"
+                            id="collectionSelect">
+                        <option th:each="collection: ${collections}" th:value="${collection.id}"
+                                th:text="${collection.designation}"
+                                th:selected="${collection.id == livre.collection}"></option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <label for="langueSelect">langue</label>
+                    <select name="langue" class="my-form save-input form-control" style="border-radius: 0rem" id="langueSelect">
+                        <option th:each="langue: ${langues}" th:value="${langue.code}" th:text="${langue.designation}"
+                                th:selected="${langue.code == livre.langue}"></option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <label for="nombrePagesInput">nombre de pages</label>
+                    <input type="number" name="nombre_pages" th:value="${livre.nombre_pages}"
+                           class="my-form save-input form-control" style="border-radius: 0rem" id="nombrePagesInput">
+                </div>
+                <div class="form-floating">
+                    <label for="resumeTextarea">resume</label>
+                    <textarea name="resume" class="my-form save-input form-control" id="resumeTextarea"
+                              style="border-radius: 0rem 0rem 0.25rem 0.25rem" th:text="${livre.resume}"></textarea>
+                </div>
+                <input type="submit" value="Sauvegarder" class="w-100 btn btn-lg my-btn" style="margin-top: 10px">
+            </form>
+
+        </div>
+    </div>
+    </div>
+</main>
+
+</body>
+</html>

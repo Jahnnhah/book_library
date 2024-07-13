@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modier un livre</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/livre.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link my-active" aria-current="page">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}" class="nav-link">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <h2> Modifier le membre id <span class="my-title" th:text="${membre.id}"></span></h2>
+        <div>
+            <div class="form-save">
+            <form th:action="@{/book-library/membre/save}" method="post">
+                <input type="hidden" name="id" th:value="${membre.id}">
+                <div class="form-floating">
+                    <label for="typeMembreSelect">Type de membre</label>
+                    <select id="typeMembreSelect" name="type_membre" class="my-form save-input form-control"
+                            style="border-radius: 0.25rem 0.25rem 0rem 0rem">
+                        <option th:each="typeMembre: ${typeMembres}" th:value="${typeMembre.id}"
+                                th:text="${typeMembre.designation}"
+                                th:selected="${typeMembre.id == membre.type_membre}"></option>
+                    </select>
+                </div>
+                <div class="form-floating">
+                    <label for="nomInput">Nom</label>
+                    <input type="text" name="nom" th:value="${membre.nom}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="nomInput">
+                </div>
+                <div class="form-floating">
+                    <label for="prenomInput">Prénom</label>
+                    <input type="text" name="prenom" th:value="${membre.prenom}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="prenomInput">
+                </div>
+                <div class="form-floating">
+                    <label for="emailInput">Email</label>
+                    <input type="email" name="email" th:value="${membre.email}" class="my-form save-input form-control"
+                           style="border-radius: 0rem" id="emailInput">
+                </div>
+                <div class="form-floating">
+                    <label for="dateNaissanceInput">Date de naissance</label>
+                    <input type="date" name="date_naissance" th:value="${membre.date_naissance}"
+                           class="my-form save-input form-control"
+                           style="border-radius: 0rem 0rem 0.25rem 0.25rem" id="dateNaissanceInput">
+                </div>
+                <input type="submit" value="Sauvegarder" class="w-100 btn btn-lg my-btn" style="margin-top: 10px">
+            </form>
+        </div>
+    </div>
+    </div>
+</main>
+</body>
+</html>

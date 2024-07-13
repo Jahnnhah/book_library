@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Membres</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link my-active" aria-current="page">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}" class="nav-link">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+
+<!--  content  -->
+    <div class="dashboard">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <table class="table" style="border-radius: 1px">
+                        <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>mail</th>
+                            <th>type membre</th>
+                            <th>date naissance</th>
+                            <th>Action</th>
+                            <th>Action</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="membre: ${membres}">
+                            <td>
+                                <a class="my-link" th:href="@{/book-library/membre/{id}(id=${membre.id})}" th:text="${membre.id}"></a>
+                                <span th:if="${membre.estPenalise()}" class="mx-3 badge bg-danger rounded-pill">pénalisé</span>
+                            </td>
+                            <td th:text="${membre.email}"></td>
+                            <td th:text="${membre.type_membre_designation}"></td>
+                            <td th:text="${#dates.format(membre.date_naissance, 'd MMM yyyy') + ' (' + membre.getAge() + ')'}"></td>
+                            <td><a class="my-link" th:href="@{/book-library/membre/{id}/update(id=${membre.id})}">Update</a></td>
+                            <td><a class="my-link" th:href="@{/book-library/membre/{id}/delete(id=${membre.id})}">Delete</a></td>
+                            <td><a class="my-link" th:href="@{/book-library/emprunt(idMembre=${membre.id})}">Emprunter</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-save">
+                    <form th:action="@{/book-library/membre/save}" method="post">
+                        <h4>New membre</h4>
+                        <div class="form-floating">
+                            <label for="typeMembreSelect">Type membre</label>
+                            <select name="type_membre" class="my-form save-input form-control" style="border-radius: 0.25rem 0.25rem 0rem 0rem" id="typeMembreSelect">
+                                <option th:each="typeMembre: ${typeMembres}" th:value="${typeMembre.id}" th:text="${typeMembre.designation}"></option>
+                            </select>
+                        </div>
+                        <div class="form-floating">
+                            <label for="nomInput">Nom</label>
+                            <input type="text" name="nom" value="Manavotra" class="my-form save-input form-control" style="border-radius: 0rem" id="nomInput">
+                        </div>
+                        <div class="form-floating">
+                            <label for="prenomInput">Prénom</label>
+                            <input type="text" name="prenom" value="Jahnhah" class="my-form save-input form-control" style="border-radius: 0rem" id="prenomInput">
+                        </div>
+                        <div class="form-floating">
+                            <label for="emailInput">Email</label>
+                            <input type="email" name="email" value="manavotrajahnhah@gmail.com" class="my-form save-input form-control" style="border-radius: 0rem" id="emailInput">
+                        </div>
+                        <div class="form-floating">
+                            <label for="dateNaissanceInput">Date de naissance</label>
+                            <input type="date" name="date_naissance" value="2007-07-11" class="my-form save-input form-control" style="border-radius: 0rem 0rem 0.25rem 0.25rem" id="dateNaissanceInput">
+                        </div>
+                        <input type="submit" value="Sauvegarder" class="w-100 btn btn-lg my-btn" style="margin-top: 10px">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

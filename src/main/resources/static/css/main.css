@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F5F5DC;
+    color: #101A45;
+    height: 100vh;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+main.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 15px;
+    background-color: #101A45;
+    color: white;
+    width: 280px;
+    height: 100vh; /* Set height to 100% of the viewport height */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.dashboard {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    background-color: #F5F5DC; /* Ensure the background color is consistent */
+}
+
+.dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dashboard-col {
+    flex: 1 1 calc(50% - 20px); /* Adjust to make columns wider */
+    max-width: calc(50% - 20px); /* Adjust to make columns wider */
+}
+
+.card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #101A45;
+    color: white;
+    padding: 10px 15px;
+    border-bottom: 1px solid #101A45;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.my-title {
+    color: #101A45;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    margin-bottom: 15px;
+    color: #101A45;
+}
+
+.my-btn {
+    background-color: #101A45;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.my-btn:hover {
+    background-color: #F5F5DC;
+    color: #101A45;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar-header .my-title {
+    font-size: 1.25rem;
+    color: white;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-item {
+    margin-bottom: 10px;
+}
+
+.sidebar-nav .nav-link {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar-nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+.my-active {
+    font-weight: bold;
+}
+
+ .custom-button {
+     font-size: 1.25rem; /* Equivalent to .btn-lg */
+     border: 2px solid red; /* Equivalent to .btn-outline-danger */
+     background-color: transparent; /* Make sure background is transparent */
+     color: red; /* Text color */
+     padding: 10px 20px; /* Padding to make it larger */
+     border-radius: 5px; /* Optional: Adds rounded corners */
+     cursor: pointer; /* Pointer cursor on hover */
+     transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+ }
+
+.custom-button:hover {
+    background-color: red; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
+
+.my-btn {
+    font-size: 1.25rem; /* Equivalent to .btn-lg */
+    border: 2px solid #101A45; /* Border color */
+    background-color: transparent; /* Make sure background is transparent */
+    color: #101A45; /* Text color */
+    padding: 10px 20px; /* Padding to make it larger */
+    border-radius: 5px; /* Optional: Adds rounded corners */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Ensures proper spacing */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.my-btn:hover {
+    font-size: 1.25rem; /* Equivalent to .btn-lg */
+    border: 2px solid #101A45; /* Border color */
+    background-color: #101A45; /* Make sure background is transparent */
+    color: #FFFFFF; /* Text color */
+    padding: 10px 20px; /* Padding to make it larger */
+    border-radius: 5px; /* Optional: Adds rounded corners */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Ensures proper spacing */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    box-sizing: border-box;
+}

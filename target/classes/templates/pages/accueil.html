@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Library</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body class="my-text">
+<main class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a th:href="@{/book-library}" class="sidebar-header">
+            <span class="my-title">Book Library</span>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a th:href="@{/book-library}" class="nav-link my-active" aria-current="page">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/livre}" class="nav-link">Livres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/membre}" class="nav-link">Membres</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/book-library/emprunt}" class="nav-link">Emprunts</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <div class="dashboard-row">
+
+            <div class="dashboard-col">
+                <div class="card my-card">
+                    <div class="card-header">
+                        Livre le plus emprunté
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title my-title" th:text="${livre.count}"></h5>
+                        <p class="card-text" th:text="${livre.titre}"></p>
+                        <a th:href="@{book-library/livre/{id}(id=${livre.id})}" class="btn my-btn">Détail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-col">
+                <div class="card my-card">
+                    <div class="card-header">
+                        Membre le plus actif
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title my-title" th:text="${membre.count}"></h5>
+                        <p class="card-text" th:text="${membre.nom}+' '+${membre.prenom}"></p>
+                        <a th:href="@{book-library/membre/{id}(id=${membre.id})}" class="btn my-btn">Détail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-col">
+                <div class="card my-card">
+                    <div class="card-header">
+                        Nombre d'emprunt en cours
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title my-title" th:text="${empruntEnCour}"></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-col">
+                <div id="chart"></div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function () {
+        // Extract data from the Thymeleaf model attribute
+        var dataPoints = /*[[${livres}]]*/ [];
+        var names = dataPoints.map(function(dp) {
+            return dp.id;
+        });
+        var counts = dataPoints.map(function(dp) {
+            return dp.count;
+        });
+
+        var options = {
+            series: [{
+                name: 'Count',
+                data: counts
+            }],
+            chart: {
+                height: 350,
+                type: 'bar'
+            },
+            title: {
+                text: 'Emprunts des livres'
+            },
+            fill: {
+                colors: ['#204df0', '#204df0', '#204df0']
+            },
+            tooltip: {
+                theme: 'light' // Change tooltip theme (light or dark)
+            },
+            xaxis: {
+                categories: names,
+                labels: {
+                    style: {
+                        colors: '#ffffff' // Change x-axis label text color here
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#ffffff' // Change y-axis label text color here
+                    }
+                }
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }],
+            labels: names
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>
