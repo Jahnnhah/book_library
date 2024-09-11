@@ -1,5 +1,7 @@
 create database book_library;
 
+\c book_library
+
 create sequence auteur_seq start with 1 increment by 1;
 
 create table auteur
